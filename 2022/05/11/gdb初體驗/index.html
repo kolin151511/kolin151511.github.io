@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/hamfavicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hamfavicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/hamfavicon/favicon-16x16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","width":280,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="學 C 要夠逼，gdb 肯定是要會的。 除錯器(debugger)，可以在一個精準受控的環境下執行另一個程式。例如: 單步執行程式，跟蹤程式，查看變數內容，記憶體地址，以及程式中每一條指令指行完畢後CPU暫存器的變化情況，檢視程式呼叫堆疊等等。 gdb，全名為gnu debugger，是在GNU軟體系統中的標準除錯器，介面為互動式的shell，許多類Unix，如:FreeBSD, Linux等作業">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb 初體驗">
+<meta property="og:url" content="http://example.com/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/">
+<meta property="og:site_name" content="Hacotaro">
+<meta property="og:description" content="學 C 要夠逼，gdb 肯定是要會的。 除錯器(debugger)，可以在一個精準受控的環境下執行另一個程式。例如: 單步執行程式，跟蹤程式，查看變數內容，記憶體地址，以及程式中每一條指令指行完畢後CPU暫存器的變化情況，檢視程式呼叫堆疊等等。 gdb，全名為gnu debugger，是在GNU軟體系統中的標準除錯器，介面為互動式的shell，許多類Unix，如:FreeBSD, Linux等作業">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/AojRA0X.jpg">
+<meta property="og:image" content="https://i.imgur.com/VIgWdQg.png">
+<meta property="article:published_time" content="2022-05-11T11:37:11.000Z">
+<meta property="article:modified_time" content="2022-05-11T11:45:40.473Z">
+<meta property="article:author" content="Linson Ho">
+<meta property="article:tag" content="GDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/AojRA0X.jpg">
+
+
+<link rel="canonical" href="http://example.com/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"http://example.com/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/","path":"2022/05/11/gdb初體驗/","title":"gdb 初體驗"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>gdb 初體驗 | Hacotaro</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Hacotaro" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hacotaro</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">哈扣太郎</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-gdb"><span class="nav-number">1.</span> <span class="nav-text">如何使用 gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDB-commands"><span class="nav-number">2.</span> <span class="nav-text">GDB commands</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ask-for-help"><span class="nav-number">2.1.</span> <span class="nav-text">ask for help</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#breakpoint"><span class="nav-number">2.2.</span> <span class="nav-text">breakpoint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run"><span class="nav-number">2.3.</span> <span class="nav-text">run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#backtrace-and-frame-super-important"><span class="nav-number">2.4.</span> <span class="nav-text">backtrace and frame  (super important)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#frame"><span class="nav-number">2.4.1.</span> <span class="nav-text">frame</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#disassemble-super-important"><span class="nav-number">2.5.</span> <span class="nav-text">disassemble (super important)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cheat-sheet"><span class="nav-number">2.6.</span> <span class="nav-text">cheat sheet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REF"><span class="nav-number">2.7.</span> <span class="nav-text">REF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDB-extensions"><span class="nav-number">3.</span> <span class="nav-text">GDB extensions</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linson Ho"
+      src="/images/avatar_ham_on_kb.jpg">
+  <p class="site-author-name" itemprop="name">Linson Ho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="mailto:kolin151511@gmail.com" title="E-Mail → mailto:kolin151511@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/%E5%9D%A4%E9%9C%96-%E4%BD%95-03a953189" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;%E5%9D%A4%E9%9C%96-%E4%BD%95-03a953189" rel="noopener" target="_blank"><i class="fa-brands fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/kuan_0ho" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;kuan_0ho" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_ham_on_kb.jpg">
+      <meta itemprop="name" content="Linson Ho">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hacotaro">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="gdb 初體驗 | Hacotaro">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gdb 初體驗
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2022-05-11 19:37:11 / 修改時間：19:45:40" itemprop="dateCreated datePublished" datetime="2022-05-11T19:37:11+08:00">2022-05-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%B8%E7%BF%92%E7%B4%80%E9%8C%84/" itemprop="url" rel="index"><span itemprop="name">學習紀錄</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/05/11/gdb初體驗/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>學 C 要夠逼，gdb 肯定是要會的。</p>
+<p>除錯器(debugger)，可以在一個精準受控的環境下執行另一個程式。例如: 單步執行程式，跟蹤程式，查看變數內容，記憶體地址，以及程式中每一條指令指行完畢後CPU暫存器的變化情況，檢視程式呼叫堆疊等等。</p>
+<p>gdb，全名為gnu debugger，是在GNU軟體系統中的標準除錯器，介面為互動式的shell，許多類Unix，如:FreeBSD, Linux等作業系統中都能夠使用，支援許多語言，包括C, C++等。</p>
+<span id="more"></span>
+<p>詳細的gdb使用手冊，可以在shell中輸入info gdb查閱。</p>
+<h2 id="如何使用-gdb"><a href="#如何使用-gdb" class="headerlink" title="如何使用 gdb"></a>如何使用 gdb</h2><ol>
+<li>在輸出 executable file 時設定 debugger 選項 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -g -o excutableFile sourceFile.c</span><br></pre></td></tr></table></figure></li>
+<li>gdb 只能輸入 binary file 來執行 ( 同一個目錄底下 ) <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb ./executableFileName</span><br></pre></td></tr></table></figure>
+ ( <u> .&#x2F; </u> 是用來執行 executable file 的用法 )<h2 id="GDB-commands"><a href="#GDB-commands" class="headerlink" title="GDB commands"></a>GDB commands</h2>gdb 指令也可以透過 tab 鍵自己補全<h3 id="ask-for-help"><a href="#ask-for-help" class="headerlink" title="ask for help"></a>ask for help</h3></li>
+</ol>
+<ul>
+<li>help  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) help commandName</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="breakpoint"><a href="#breakpoint" class="headerlink" title="breakpoint"></a>breakpoint</h3><ul>
+<li>create breakpoint  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) break functionName</span><br></pre></td></tr></table></figure></li>
+<li>check all breakpoints  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info break</span><br></pre></td></tr></table></figure></li>
+<li>delete the breakpoint  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) del breakpointNumber</span><br></pre></td></tr></table></figure></li>
+<li>continue<br>After checking some information we want know, we might want the program to continue (c)  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) continue</span><br></pre></td></tr></table></figure>
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3></li>
+<li>show the entire codes of the file  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) list</span><br></pre></td></tr></table></figure></li>
+<li>run(r) the file  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="backtrace-and-frame-super-important"><a href="#backtrace-and-frame-super-important" class="headerlink" title="backtrace and frame  (super important)"></a><strong>backtrace and frame</strong>  (super important)</h3><ul>
+<li>backtrace (bt)  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) backtrace</span><br></pre></td></tr></table></figure>
+<h4 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h4>A frame is one of the program states in the backtrace. We can switch to a frame we want, and to check some information in that frame.</li>
+<li>frame(f)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) frame</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="disassemble-super-important"><a href="#disassemble-super-important" class="headerlink" title="disassemble (super important)"></a><strong>disassemble</strong> (super important)</h3><ul>
+<li>disassemble  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble functionName</span><br></pre></td></tr></table></figure>
+<h3 id="cheat-sheet"><a href="#cheat-sheet" class="headerlink" title="cheat sheet"></a>cheat sheet</h3><img src="https://i.imgur.com/AojRA0X.jpg"><br><img src="https://i.imgur.com/VIgWdQg.png"></li>
+</ul>
+<h3 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h3><p><a target="_blank" rel="noopener" href="https://tigercosmos.xyz/post/2020/09/system/debug-gdb/">https://tigercosmos.xyz/post/2020/09/system/debug-gdb/</a></p>
+<h2 id="GDB-extensions"><a href="#GDB-extensions" class="headerlink" title="GDB extensions"></a>GDB extensions</h2>
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Linson Ho
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="http://example.com/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/" title="gdb 初體驗">http://example.com/2022/05/11/gdb初體驗/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/GDB/" rel="tag"># GDB</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/11/MarkDown%20%E8%AA%9E%E6%B3%95%E7%B4%80%E9%8C%84/" rel="prev" title="MarkDown 語法紀錄">
+                  <i class="fa fa-chevron-left"></i> MarkDown 語法紀錄
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linson Ho</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"hacotaro","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/05/11/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>MarkDown 語法紀錄</title>
+    <url>/2022/05/11/MarkDown%20%E8%AA%9E%E6%B3%95%E7%B4%80%E9%8C%84/</url>
+    <content><![CDATA[<p>嘗試在這邊紀錄一下 Markdown 語法</p>
+<h2 id="h2"><a href="#h2" class="headerlink" title="h2"></a>h2</h2><h3 id="h3"><a href="#h3" class="headerlink" title="h3"></a>h3</h3><h4 id="h3-code-segment"><a href="#h3-code-segment" class="headerlink" title="h3 code segment"></a>h3 code segment</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hamutaro is cutee ! &quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>學習紀錄</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gdb 初體驗</title>
+    <url>/2022/05/11/gdb%E5%88%9D%E9%AB%94%E9%A9%97/</url>
+    <content><![CDATA[<p>學 C 要夠逼，gdb 肯定是要會的。</p>
+<p>除錯器(debugger)，可以在一個精準受控的環境下執行另一個程式。例如: 單步執行程式，跟蹤程式，查看變數內容，記憶體地址，以及程式中每一條指令指行完畢後CPU暫存器的變化情況，檢視程式呼叫堆疊等等。</p>
+<p>gdb，全名為gnu debugger，是在GNU軟體系統中的標準除錯器，介面為互動式的shell，許多類Unix，如:FreeBSD, Linux等作業系統中都能夠使用，支援許多語言，包括C, C++等。</p>
+<span id="more"></span>
+<p>詳細的gdb使用手冊，可以在shell中輸入info gdb查閱。</p>
+<h2 id="如何使用-gdb"><a href="#如何使用-gdb" class="headerlink" title="如何使用 gdb"></a>如何使用 gdb</h2><ol>
+<li>在輸出 executable file 時設定 debugger 選項 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc -g -o excutableFile sourceFile.c</span><br></pre></td></tr></table></figure></li>
+<li>gdb 只能輸入 binary file 來執行 ( 同一個目錄底下 ) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gdb ./executableFileName</span><br></pre></td></tr></table></figure>
+ ( <u> .&#x2F; </u> 是用來執行 executable file 的用法 )<h2 id="GDB-commands"><a href="#GDB-commands" class="headerlink" title="GDB commands"></a>GDB commands</h2>gdb 指令也可以透過 tab 鍵自己補全<h3 id="ask-for-help"><a href="#ask-for-help" class="headerlink" title="ask for help"></a>ask for help</h3></li>
+</ol>
+<ul>
+<li>help  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) help commandName</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="breakpoint"><a href="#breakpoint" class="headerlink" title="breakpoint"></a>breakpoint</h3><ul>
+<li>create breakpoint  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) break functionName</span><br></pre></td></tr></table></figure></li>
+<li>check all breakpoints  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) info break</span><br></pre></td></tr></table></figure></li>
+<li>delete the breakpoint  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) del breakpointNumber</span><br></pre></td></tr></table></figure></li>
+<li>continue<br>After checking some information we want know, we might want the program to continue (c)  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) continue</span><br></pre></td></tr></table></figure>
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3></li>
+<li>show the entire codes of the file  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) list</span><br></pre></td></tr></table></figure></li>
+<li>run(r) the file  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) run</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="backtrace-and-frame-super-important"><a href="#backtrace-and-frame-super-important" class="headerlink" title="backtrace and frame  (super important)"></a><strong>backtrace and frame</strong>  (super important)</h3><ul>
+<li>backtrace (bt)  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) backtrace</span><br></pre></td></tr></table></figure>
+<h4 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h4>A frame is one of the program states in the backtrace. We can switch to a frame we want, and to check some information in that frame.</li>
+<li>frame(f)<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) frame</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="disassemble-super-important"><a href="#disassemble-super-important" class="headerlink" title="disassemble (super important)"></a><strong>disassemble</strong> (super important)</h3><ul>
+<li>disassemble  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble functionName</span><br></pre></td></tr></table></figure>
+<h3 id="cheat-sheet"><a href="#cheat-sheet" class="headerlink" title="cheat sheet"></a>cheat sheet</h3><img src="https://i.imgur.com/AojRA0X.jpg"><br><img src="https://i.imgur.com/VIgWdQg.png"></li>
+</ul>
+<h3 id="REF"><a href="#REF" class="headerlink" title="REF"></a>REF</h3><p><a href="https://tigercosmos.xyz/post/2020/09/system/debug-gdb/">https://tigercosmos.xyz/post/2020/09/system/debug-gdb/</a></p>
+<h2 id="GDB-extensions"><a href="#GDB-extensions" class="headerlink" title="GDB extensions"></a>GDB extensions</h2>]]></content>
+      <categories>
+        <category>學習紀錄</category>
+      </categories>
+      <tags>
+        <tag>GDB</tag>
+      </tags>
+  </entry>
+</search>
