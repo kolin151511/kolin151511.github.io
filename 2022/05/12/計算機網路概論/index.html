@@ -20,26 +20,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","width":280,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="article">
-<meta property="og:title" content="計算機網路概論">
+    <meta name="description" content="OSI (open system interconnection) model created by ISO(international standard organization) 為什麼需要分層 ?  整個網路連接過程涉及相當多軟硬體 (e.g 硬體線路、設備、軟體資料封包、應用程式)，所以在一支程式包含全部，會很龐大，也難以維護、擴展。  每一層只認識對方同一層的資料，即區分的出那些是傳遞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7 layers OSI mode">
 <meta property="og:url" content="http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/">
 <meta property="og:site_name" content="Hacotaro">
+<meta property="og:description" content="OSI (open system interconnection) model created by ISO(international standard organization) 為什麼需要分層 ?  整個網路連接過程涉及相當多軟硬體 (e.g 硬體線路、設備、軟體資料封包、應用程式)，所以在一支程式包含全部，會很龐大，也難以維護、擴展。  每一層只認識對方同一層的資料，即區分的出那些是傳遞">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/5LD27vA.png">
+<meta property="og:image" content="https://i.imgur.com/yDdjFn5.png">
+<meta property="og:image" content="https://i.imgur.com/3OKaWN9.png">
+<meta property="og:image" content="https://i.imgur.com/cdREl4A.png">
 <meta property="article:published_time" content="2022-05-12T01:25:34.000Z">
-<meta property="article:modified_time" content="2022-05-12T01:48:12.997Z">
+<meta property="article:modified_time" content="2022-06-04T06:15:16.314Z">
 <meta property="article:author" content="Linson Ho">
 <meta property="article:tag" content="computer nework">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/5LD27vA.png">
 
 
 <link rel="canonical" href="http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/","path":"2022/05/12/計算機網路概論/","title":"計算機網路概論"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/","path":"2022/05/12/計算機網路概論/","title":"7 layers OSI mode"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>計算機網路概論 | Hacotaro</title>
+<title>7 layers OSI mode | Hacotaro</title>
   
 
 
@@ -132,7 +139,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目錄
@@ -145,6 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#l1-physical-layer"><span class="nav-number">1.</span> <span class="nav-text">L1 physical layer</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -159,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -170,7 +178,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -237,12 +245,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="計算機網路概論 | Hacotaro">
+      <meta itemprop="name" content="7 layers OSI mode | Hacotaro">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          計算機網路概論
+          7 layers OSI mode
         </h1>
 
         <div class="post-meta-container">
@@ -252,9 +260,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2022-05-12 09:25:34 / 修改時間：09:48:12" itemprop="dateCreated datePublished" datetime="2022-05-12T09:25:34+08:00">2022-05-12</time>
+      <time title="創建時間：2022-05-12 09:25:34" itemprop="dateCreated datePublished" datetime="2022-05-12T09:25:34+08:00">2022-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2022-06-04 14:15:16" itemprop="dateModified" datetime="2022-06-04T14:15:16+08:00">2022-06-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -290,7 +304,118 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <ul>
+<li>OSI (open system interconnection) model created by ISO(international
+standard organization)</li>
+<li>為什麼需要分層 ?
+<ul>
+<li>整個網路連接過程涉及相當多軟硬體 (e.g
+硬體線路、設備、軟體資料封包、應用程式)，所以在一支程式包含全部，會很龐大，也難以維護、擴展。</li>
+</ul></li>
+<li>每一層只認識對方同一層的資料，即區分的出那些是傳遞用資料(header
+...etc )、真正的傳輸資料(對非同層的來說就是傳輸資料)</li>
+<li>每一層都透過下一層提供的服務，往上提供給上一層服務</li>
+<li>實務上程式撰寫採用 TCP/IP 通訊協定，只有四層。</li>
+<li>硬體裝置如何分辨是屬一哪一層的 ? 看他有能力處理到哪層的資料格式
+<ul>
+<li>switch : L2 (透過 MAC Address 去 transfer)</li>
+<li>router : L3 (透過 IP Address 去 transfer)</li>
+<li>host : L7 <img data-src="https://i.imgur.com/5LD27vA.png"></li>
+</ul></li>
+</ul>
+<h2 id="l1-physical-layer">L1 physical layer</h2>
+<p>core target : * 如何確保訊號(bits)順利傳給對方</p>
+<p>key featrues : * 傳輸媒體(媒介) media : * 同軸電纜 (Coaxial cable) *
+雙絞線 (Twisted Pair) * 光纖 (Optic fiber) * 無線網路 (Wireless LAN) *
+訊號編碼 signal coding * Clock 的速度多少也是包含傳輸資料在裡面給對方
+reciever host * clock 同步資料才會正確，有誤差累積久了就錯了。 * 每一台
+host 都有自己的 clock ## L2 Data-link layer core target * 如何把訊框
+(frame) 用對應 MAC protocol 給下一台 <strong>直接連接 (directly
+connected)</strong> 的硬體設備，eg. 一個 router 到下一台
+router，地球上一端到另一端 maybe 有 10 多個 router</p>
+<p>key features : * MAC (media access control) * LLC (logical link
+control) * 此層重要協定 : * CSMA/CD (IEEE 802.3 乙太網路) * CSMA/CA
+(IEEE 802.11 wifi) * random 也是一種，但就是傳輸效率很差 * 建構的
+topology 不同 * point to point * multiple access * L2 devices :
+switch、Bridge * 所有人建構網路時都要配合協定才會達到效果 ## L3 Network
+layer core target * 如何把封包 (packet) 透過 Internet
+到對方主機(距離長比起 data-link 層怎一段而言，因為非直接連接)? *
+怎麼送到對方主機，路線?</p>
+<p>key features : * addressing 定址 * routing 路由 * 此層重要協定 : IP *
+此 layer 服務是不可靠的服務，進去到 internet
+裡面不一定在對面是能出來的。 ### 路由 *
+網路的壅塞、連通與否等等狀態是動態變化的。 * 網路狀況如何得知 ? router
+之間會互相溝通 (不定時 or 定時)，這就是 protocol * 壅塞定義 :
+出去速度太慢，比進來的慢，router
+也是設備透過記憶體保存封包，但是如果滿了就可能掉。 * routing
+protocol，製作出 routing table * RIP : 第一代，情報交換每 30s
+交換一次，不符合現代需求，太慢。 * OSPF (open shortest path first) :
+走最短路徑，每個 router 都有不同的最短路徑。 * 短的定義 ? 距離、時間 ?
+(可能依照 physical 材質不同，而有不同定義) * BGP *
+更新過的網路狀況資料，會放在 routing table (動態維護)，封包寄來 router
+會查表去決定。 * routing algorithm * 設計要點 :
+正確性、簡單性、強韌性、穩定性、公平性、最佳效率 * best effort :
+盡力，封包掉了也不會幫忙重送，要往上層靠 TCP *
+同時設計公平又保有最佳效率是演算法設計困難點。 ## L4 Transfer layer core
+target: * 提供不同主機 processes 之間的溝通，processes to processes
+channel。</p>
+<p>key features : * L4 以上 layers 幾乎只有主機(end-host)才有 *
+這個傳輸的任務，有甚麼需求 ? e.g audio/video streaming
+(可以掉部分封包、盡力式、UDP)、data transfering (要可靠傳輸) * unit of
+data in this layer is called <strong>message</strong> * TCP
+因為下層(IP)不可靠，如何建立可靠連接 ? sender host 跟 reciever host
+如何溝通 ? ## L5 Session layer core target : * session : Provides a name
+space that is used to tie together the potentially different transport
+streams that are part of a single application (把很多的 transport layer
+的 stream 彙整在一起，叫做 session)</p>
+<p>key features : * 維持連線區段 * 連線區段操作 :
+設定、連線區段兩端資料交換、結束時關閉連線、監看連線區段識別碼。 *
+同步化(synchronization) by setting checkpoint 如果發生錯誤(此時在後面的
+checkpoint)，在上一個ckeckpoint 之後重傳就好。 * 常見協定 : * RPC :
+提供分散式服務機制 * sql : 資料庫語言 invented by IBM * NFS :
+遠端網路資源存取機制 by SUN microsystem ### 資料交換方式 | Simplex 單工
+| Half-Duplex 半雙工 | Full-Duplex 全雙工 | | -------- | -------- |
+-------- | | 資料只允許單方向傳遞 |
+資料允許雙向傳遞，但是單一時間只有一個方向 | 同一時間可以雙向傳遞 | |e.g
+收音機、電視|e.g 對講機|e.g 電話系統| ## L6 Presentation layer key
+features : * 資料格式轉換 : * 傳送出去的訊息(e.g
+圖片、影片)會轉成，可以被傳送的通用格式(可以被塞進去封包)，同理傳進來的會被轉成上層應用所需資料格式。
+* 協定轉換 * 資料加密(encryption)、解密(decryption) * 資料壓縮 *
+常見表現格式: * JPEG : 壓縮過的圖片格式 * TIFF : 高解析度的圖片格式 *
+MIDI : 數位音樂格式 * MPEG : 動態視訊壓縮標準 ## L7 Application layer *
+提供介面應用程式取得各種支援應用程式網路服務 *
+流量控制、應用程式錯誤修正 * 典型服務 * Email * BBS : 電子式公布欄系統 *
+EDI :電子資料交換 * WWW :使用瀏覽器瀏覽網路資訊、包含文字、圖片、聲音 ##
+Internet Architecture * define by IETF (Internet Engineering Task Force)
+* key features : * <strong>does not imply strict layering</strong>，the
+application is free to bypass the defined transport layers and to
+directly use IP or other underlying networks * 為什麼實作上可以忽略分層
+? * IP是 host 對 host 之間在整個 Internet 中定址用，但如果在同一個 LAN
+中，也可以直接指定網卡卡號（MAC）操作。 *
+又或者說，如果兩個設備用一條線連接在一起，甚至都不用
+MAC，這條線就是專用，不會有對象要找的問題，路由要設定。 <img data-src="https://i.imgur.com/yDdjFn5.png"> * An hour-glasses shape
+沙漏狀結構。 * 上層應用(藍色區塊)，可以根據需求再擴展協定，e.g email等等
+* 中間(綠色區塊)，幾乎所以上層應用都相依於，TCP(可靠) 或 UDP(不可靠) *
+IP 則是在網路層中最終獲得公認價值 * 底下 Net 也可以有超多種實作 e.g
+光纖、雙絞線、甚至低軌道衛星電磁波。 <img data-src="https://i.imgur.com/3OKaWN9.png"> * In order for a new protocol
+to be officially included in the architecture, there needs to be both a
+protocol specification and at least one (and preferably two)
+representative implementations of the specification ## 協定資料單元 PDU
+(protocol data unit) * def : OSI
+中每一層的傳輸交換資料，包含控制資料與使用者資料等等 * 控制資料 :
+header、checkbits... <img data-src="https://i.imgur.com/cdREl4A.png"> ###
+data 資料 OSI 分層中的上三層(在 TCP/IP
+中為同一層，應用層)，應用層、表現層、會議層因為不好分出界線或是實作上程式體積小不太需要刻意分層，所以來自這三層的
+PDU 都稱作資料。 ### segment 資料段
+由上層傳遞下來的資料無法直接放入媒體中傳輸(傳輸層)，不同媒體的傳輸資料單位不同，所以在這層需要進行分封交換的動作，將資料切割成適合下層傳輸的格式。
+* 或稱這段為 messages ### packet 封包 封包的傳輸狹義上是限制說網路層的
+PDU ( 協定資料單元
+)，但是現在廣義上大家只要是網路上傳遞的資料，也都會稱作 packet。 ###
+frame 訊框
+由網路層傳遞下去的封包，必須要轉換成實際硬體可以傳輸的架構，資料連結層。
+### bits 位元 實體上傳遞(實體層)的資料訊號(可以是光的變化 : fiber optic
+光纖、電壓變化 同軸電纜)，來表示說0、1變化 。 ## Reference <a target="_blank" rel="noopener" href="https://ocw.nthu.edu.tw/ocw/index.php?page=course_news_content&amp;cid=291&amp;id=1015">黃能富教授-計算機網路概論課程資料</a></p>
+
     </div>
 
     
@@ -309,7 +434,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/" title="計算機網路概論">http://example.com/2022/05/12/計算機網路概論/</a>
+      <a href="http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/" title="7 layers OSI mode">http://example.com/2022/05/12/計算機網路概論/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -330,6 +455,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2022/05/22/Makefile%E7%94%A8%E6%B3%95/" rel="next" title="Makefile用法">
+                  Makefile用法 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

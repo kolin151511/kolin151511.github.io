@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-05-12T01:48:12.997Z</updated>
+  <updated>2022-05-22T05:58:52.207Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,12 +17,54 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>計算機網路概論</title>
+    <title>Makefile用法</title>
+    <link href="http://example.com/2022/05/22/Makefile%E7%94%A8%E6%B3%95/"/>
+    <id>http://example.com/2022/05/22/Makefile%E7%94%A8%E6%B3%95/</id>
+    <published>2022-05-22T05:44:36.000Z</published>
+    <updated>2022-05-22T05:58:52.207Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="為什麼需要-makefile">為什麼需要 Makefile ?</h2><ul><li>Makefiles 用在決定一個大型程式中哪段程式需要被 recompiled。</li><li>語言大多用在 C/C++，其他語言有自己對應的工具</li><li>example dependency graph</li></ul><h2 id="section"></h2><h2 id="reference">Reference</h2><ul><li><a href="https://mropengate.blogspot.com/2018/01/makefile.html">簡單學makefile：makefile 介紹與範例程式</a></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;為什麼需要-makefile&quot;&gt;為什麼需要 Makefile ?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Makefiles 用在決定一個大型程式中哪段程式需要被 recompiled。&lt;/li&gt;
+&lt;li&gt;語言大多用在 C/C++，其他語言有自己對應的工具&lt;/li&gt;
+&lt;li&gt;</summary>
+      
+    
+    
+    
+    <category term="學習紀錄" scheme="http://example.com/categories/%E5%AD%B8%E7%BF%92%E7%B4%80%E9%8C%84/"/>
+    
+    
+    <category term="Makefile" scheme="http://example.com/tags/Makefile/"/>
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>7 layers OSI mode</title>
     <link href="http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/"/>
     <id>http://example.com/2022/05/12/%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%A6%82%E8%AB%96/</id>
     <published>2022-05-12T01:25:34.000Z</published>
-    <updated>2022-05-12T01:48:12.997Z</updated>
+    <updated>2022-06-04T06:15:16.314Z</updated>
     
+    <content type="html"><![CDATA[<ul><li>OSI (open system interconnection) model created by ISO(internationalstandard organization)</li><li>為什麼需要分層 ?<ul><li>整個網路連接過程涉及相當多軟硬體 (e.g硬體線路、設備、軟體資料封包、應用程式)，所以在一支程式包含全部，會很龐大，也難以維護、擴展。</li></ul></li><li>每一層只認識對方同一層的資料，即區分的出那些是傳遞用資料(header...etc )、真正的傳輸資料(對非同層的來說就是傳輸資料)</li><li>每一層都透過下一層提供的服務，往上提供給上一層服務</li><li>實務上程式撰寫採用 TCP/IP 通訊協定，只有四層。</li><li>硬體裝置如何分辨是屬一哪一層的 ? 看他有能力處理到哪層的資料格式<ul><li>switch : L2 (透過 MAC Address 去 transfer)</li><li>router : L3 (透過 IP Address 去 transfer)</li><li>host : L7 <img data-src="https://i.imgur.com/5LD27vA.png"></li></ul></li></ul><h2 id="l1-physical-layer">L1 physical layer</h2><p>core target : * 如何確保訊號(bits)順利傳給對方</p><p>key featrues : * 傳輸媒體(媒介) media : * 同軸電纜 (Coaxial cable) *雙絞線 (Twisted Pair) * 光纖 (Optic fiber) * 無線網路 (Wireless LAN) *訊號編碼 signal coding * Clock 的速度多少也是包含傳輸資料在裡面給對方reciever host * clock 同步資料才會正確，有誤差累積久了就錯了。 * 每一台host 都有自己的 clock ## L2 Data-link layer core target * 如何把訊框(frame) 用對應 MAC protocol 給下一台 <strong>直接連接 (directlyconnected)</strong> 的硬體設備，eg. 一個 router 到下一台router，地球上一端到另一端 maybe 有 10 多個 router</p><p>key features : * MAC (media access control) * LLC (logical linkcontrol) * 此層重要協定 : * CSMA/CD (IEEE 802.3 乙太網路) * CSMA/CA(IEEE 802.11 wifi) * random 也是一種，但就是傳輸效率很差 * 建構的topology 不同 * point to point * multiple access * L2 devices :switch、Bridge * 所有人建構網路時都要配合協定才會達到效果 ## L3 Networklayer core target * 如何把封包 (packet) 透過 Internet到對方主機(距離長比起 data-link 層怎一段而言，因為非直接連接)? *怎麼送到對方主機，路線?</p><p>key features : * addressing 定址 * routing 路由 * 此層重要協定 : IP *此 layer 服務是不可靠的服務，進去到 internet裡面不一定在對面是能出來的。 ### 路由 *網路的壅塞、連通與否等等狀態是動態變化的。 * 網路狀況如何得知 ? router之間會互相溝通 (不定時 or 定時)，這就是 protocol * 壅塞定義 :出去速度太慢，比進來的慢，router也是設備透過記憶體保存封包，但是如果滿了就可能掉。 * routingprotocol，製作出 routing table * RIP : 第一代，情報交換每 30s交換一次，不符合現代需求，太慢。 * OSPF (open shortest path first) :走最短路徑，每個 router 都有不同的最短路徑。 * 短的定義 ? 距離、時間 ?(可能依照 physical 材質不同，而有不同定義) * BGP *更新過的網路狀況資料，會放在 routing table (動態維護)，封包寄來 router會查表去決定。 * routing algorithm * 設計要點 :正確性、簡單性、強韌性、穩定性、公平性、最佳效率 * best effort :盡力，封包掉了也不會幫忙重送，要往上層靠 TCP *同時設計公平又保有最佳效率是演算法設計困難點。 ## L4 Transfer layer coretarget: * 提供不同主機 processes 之間的溝通，processes to processeschannel。</p><p>key features : * L4 以上 layers 幾乎只有主機(end-host)才有 *這個傳輸的任務，有甚麼需求 ? e.g audio/video streaming(可以掉部分封包、盡力式、UDP)、data transfering (要可靠傳輸) * unit ofdata in this layer is called <strong>message</strong> * TCP因為下層(IP)不可靠，如何建立可靠連接 ? sender host 跟 reciever host如何溝通 ? ## L5 Session layer core target : * session : Provides a namespace that is used to tie together the potentially different transportstreams that are part of a single application (把很多的 transport layer的 stream 彙整在一起，叫做 session)</p><p>key features : * 維持連線區段 * 連線區段操作 :設定、連線區段兩端資料交換、結束時關閉連線、監看連線區段識別碼。 *同步化(synchronization) by setting checkpoint 如果發生錯誤(此時在後面的checkpoint)，在上一個ckeckpoint 之後重傳就好。 * 常見協定 : * RPC :提供分散式服務機制 * sql : 資料庫語言 invented by IBM * NFS :遠端網路資源存取機制 by SUN microsystem ### 資料交換方式 | Simplex 單工| Half-Duplex 半雙工 | Full-Duplex 全雙工 | | -------- | -------- |-------- | | 資料只允許單方向傳遞 |資料允許雙向傳遞，但是單一時間只有一個方向 | 同一時間可以雙向傳遞 | |e.g收音機、電視|e.g 對講機|e.g 電話系統| ## L6 Presentation layer keyfeatures : * 資料格式轉換 : * 傳送出去的訊息(e.g圖片、影片)會轉成，可以被傳送的通用格式(可以被塞進去封包)，同理傳進來的會被轉成上層應用所需資料格式。* 協定轉換 * 資料加密(encryption)、解密(decryption) * 資料壓縮 *常見表現格式: * JPEG : 壓縮過的圖片格式 * TIFF : 高解析度的圖片格式 *MIDI : 數位音樂格式 * MPEG : 動態視訊壓縮標準 ## L7 Application layer *提供介面應用程式取得各種支援應用程式網路服務 *流量控制、應用程式錯誤修正 * 典型服務 * Email * BBS : 電子式公布欄系統 *EDI :電子資料交換 * WWW :使用瀏覽器瀏覽網路資訊、包含文字、圖片、聲音 ##Internet Architecture * define by IETF (Internet Engineering Task Force)* key features : * <strong>does not imply strict layering</strong>，theapplication is free to bypass the defined transport layers and todirectly use IP or other underlying networks * 為什麼實作上可以忽略分層? * IP是 host 對 host 之間在整個 Internet 中定址用，但如果在同一個 LAN中，也可以直接指定網卡卡號（MAC）操作。 *又或者說，如果兩個設備用一條線連接在一起，甚至都不用MAC，這條線就是專用，不會有對象要找的問題，路由要設定。 <img data-src="https://i.imgur.com/yDdjFn5.png"> * An hour-glasses shape沙漏狀結構。 * 上層應用(藍色區塊)，可以根據需求再擴展協定，e.g email等等* 中間(綠色區塊)，幾乎所以上層應用都相依於，TCP(可靠) 或 UDP(不可靠) *IP 則是在網路層中最終獲得公認價值 * 底下 Net 也可以有超多種實作 e.g光纖、雙絞線、甚至低軌道衛星電磁波。 <img data-src="https://i.imgur.com/3OKaWN9.png"> * In order for a new protocolto be officially included in the architecture, there needs to be both aprotocol specification and at least one (and preferably two)representative implementations of the specification ## 協定資料單元 PDU(protocol data unit) * def : OSI中每一層的傳輸交換資料，包含控制資料與使用者資料等等 * 控制資料 :header、checkbits... <img data-src="https://i.imgur.com/cdREl4A.png"> ###data 資料 OSI 分層中的上三層(在 TCP/IP中為同一層，應用層)，應用層、表現層、會議層因為不好分出界線或是實作上程式體積小不太需要刻意分層，所以來自這三層的PDU 都稱作資料。 ### segment 資料段由上層傳遞下來的資料無法直接放入媒體中傳輸(傳輸層)，不同媒體的傳輸資料單位不同，所以在這層需要進行分封交換的動作，將資料切割成適合下層傳輸的格式。* 或稱這段為 messages ### packet 封包 封包的傳輸狹義上是限制說網路層的PDU ( 協定資料單元)，但是現在廣義上大家只要是網路上傳遞的資料，也都會稱作 packet。 ###frame 訊框由網路層傳遞下去的封包，必須要轉換成實際硬體可以傳輸的架構，資料連結層。### bits 位元 實體上傳遞(實體層)的資料訊號(可以是光的變化 : fiber optic光纖、電壓變化 同軸電纜)，來表示說0、1變化 。 ## Reference <a href="https://ocw.nthu.edu.tw/ocw/index.php?page=course_news_content&amp;cid=291&amp;id=1015">黃能富教授-計算機網路概論課程資料</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;OSI (open system interconnection) model created by ISO(international
+standard organization)&lt;/li&gt;
+&lt;li&gt;為什麼需要分層 ?
+&lt;ul&gt;
+&lt;li&gt;整個網路連接過程涉及相</summary>
+      
     
     
     
@@ -64,19 +106,22 @@ Linux等作業系統中都能夠使用，支援許多語言，包括C, C++等。
     <link href="http://example.com/2022/05/11/MarkDown%20%E8%AA%9E%E6%B3%95%E7%B4%80%E9%8C%84/"/>
     <id>http://example.com/2022/05/11/MarkDown%20%E8%AA%9E%E6%B3%95%E7%B4%80%E9%8C%84/</id>
     <published>2022-05-11T05:20:34.000Z</published>
-    <updated>2022-05-12T03:32:53.255Z</updated>
+    <updated>2022-05-12T03:46:33.500Z</updated>
     
-    <content type="html"><![CDATA[<p>嘗試在這邊紀錄一下 Markdown 語法</p><h2 id="h2">h2</h2><h3 id="h3">h3</h3><h4 id="h3-code-segment">h3 code segment</h4><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>{</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"hamutaro is cutee ! "</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><h3 id="測試-emoji">測試 emoji</h3><p><span class="github-emoji"><span>😄</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p><h3 id="測試-latex-mathjaxpandoc-renderer">測試 latex ( mathjax、pandocrenderer )</h3><p><a href="https://pandoc.org/demos.html">pandoc</a></p><p><span class="math inline">\(\frac{1}{2}\)</span></p><h4 id="雙-測試">雙 {} 測試</h4><p><span class="math inline">\(\frac{1}{  {(2\pi)}^\frac{D}{2}}\)</span></p><h3 id="矩陣">矩陣</h3><p><span class="math display">\[\begin{matrix} a&amp;b\\c&amp;d \end{matrix}\quad\begin{pmatrix} a&amp;b\\c&amp;d \end{pmatrix}\quad\begin{bmatrix} a&amp;b\\c&amp;d \end{bmatrix}\quad\begin{Bmatrix} a&amp;b\\c&amp;d \end{Bmatrix}\quad\begin{vmatrix} a&amp;b\\c&amp;d \end{vmatrix}\quad\begin{Vmatrix} a&amp;b\\c&amp;d \end{Vmatrix}\quad\]</span></p><p><span class="math display">\[  X(m, n) = \left.  \begin{cases}    x(n), &amp; \text{for } 0 \leq n \leq 1 \\    x(n - 1), &amp; \text{for } 0 \leq n \leq 1 \\    x(n - 1), &amp; \text{for } 0 \leq n \leq 1  \end{cases}  \right\} = xy\]</span></p><p><span class="math display">\[A=\begin{bmatrix}    a_{11} &amp; \dots &amp; a_{1n}\\    \vdots &amp; \ddots &amp; \vdots\\    0 &amp;\dots &amp; a_{nn}\end{bmatrix}_{n \times n}\]</span></p>]]></content>
+    <content type="html"><![CDATA[<p>嘗試在這邊紀錄一下 Markdown 語法</p><h2 id="h2">h2</h2><h3 id="h3">h3</h3><h4 id="h3-code-segment">h3 code segment</h4><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>{</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"hamutaro is cutee ! "</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><h3 id="測試-emoji">測試 emoji</h3><p><span class="github-emoji"><span>😄</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p><h3 id="測試-latex-mathjaxpandoc-renderer">測試 latex ( mathjax、pandocrenderer )</h3><p><a href="https://pandoc.org/demos.html">pandoc</a></p><p><span class="math inline">\(\frac{1}{2}\)</span> <span id="more"></span> ####雙 {} 測試</p><p><span class="math inline">\(\frac{1}{  {(2\pi)}^\frac{D}{2}}\)</span></p><h3 id="矩陣">矩陣</h3><p><span class="math display">\[\begin{matrix} a&amp;b\\c&amp;d \end{matrix}\quad\begin{pmatrix} a&amp;b\\c&amp;d \end{pmatrix}\quad\begin{bmatrix} a&amp;b\\c&amp;d \end{bmatrix}\quad\begin{Bmatrix} a&amp;b\\c&amp;d \end{Bmatrix}\quad\begin{vmatrix} a&amp;b\\c&amp;d \end{vmatrix}\quad\begin{Vmatrix} a&amp;b\\c&amp;d \end{Vmatrix}\quad\]</span></p><p><span class="math display">\[  X(m, n) = \left.  \begin{cases}    x(n), &amp; \text{for } 0 \leq n \leq 1 \\    x(n - 1), &amp; \text{for } 0 \leq n \leq 1 \\    x(n - 1), &amp; \text{for } 0 \leq n \leq 1  \end{cases}  \right\} = xy\]</span></p><p><span class="math display">\[A=\begin{bmatrix}    a_{11} &amp; \dots &amp; a_{1n}\\    \vdots &amp; \ddots &amp; \vdots\\    0 &amp;\dots &amp; a_{nn}\end{bmatrix}_{n \times n}\]</span></p>]]></content>
     
     
-      
-      
     <summary type="html">&lt;p&gt;嘗試在這邊紀錄一下 Markdown 語法&lt;/p&gt;
 &lt;h2 id=&quot;h2&quot;&gt;h2&lt;/h2&gt;
 &lt;h3 id=&quot;h3&quot;&gt;h3&lt;/h3&gt;
 &lt;h4 id=&quot;h3-code-segment&quot;&gt;h3 code segment&lt;/h4&gt;
-&lt;figure class=&quot;highlight </summary>
-      
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;keyword&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;type&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title function_&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;{&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;hamutaro is cutee ! &quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;}&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;測試-emoji&quot;&gt;測試 emoji&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&quot;github-emoji&quot;&gt;&lt;span&gt;😄&lt;/span&gt;&lt;img src=&quot;https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8&quot; aria-hidden=&quot;true&quot; onerror=&quot;this.parent.classList.add(&#39;github-emoji-fallback&#39;)&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&quot;測試-latex-mathjaxpandoc-renderer&quot;&gt;測試 latex ( mathjax、pandoc
+renderer )&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://pandoc.org/demos.html&quot;&gt;pandoc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math inline&quot;&gt;\(\frac{1}{2}\)&lt;/span&gt;&lt;/p&gt;</summary>
     
     
     
@@ -84,6 +129,8 @@ Linux等作業系統中都能夠使用，支援許多語言，包括C, C++等。
     
     
     <category term="markdown" scheme="http://example.com/tags/markdown/"/>
+    
+    <category term="latex" scheme="http://example.com/tags/latex/"/>
     
   </entry>
   
